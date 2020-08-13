@@ -16,7 +16,6 @@ import org.mockito.Mockito;
 
 import dev.marcuspinto.entity.Client;
 import dev.marcuspinto.entity.ClientService;
-import dev.marcuspinto.rest.client.Cadastro;
 import dev.marcuspinto.util.CovidUtil;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
@@ -48,48 +47,48 @@ public class CovidResourceTest {
 	}
 	
     @Test
-    public void testCadastro() {
+    public void testRegister() {
     	
-    	Cadastro cadastro = new Cadastro();
-    	cadastro.setName(NAME);
-    	cadastro.setRateLimitPerMinute(RATE_LIMIT);
+    	Register register = new Register();
+    	register.setName(NAME);
+    	register.setRateLimitPerMinute(RATE_LIMIT);
     	
     	Jsonb jsonb = JsonbBuilder.create();
-    	String cadastroJson = jsonb.toJson(cadastro);
+    	String registerJson = jsonb.toJson(register);
     	
-        given().body(cadastroJson)
+        given().body(registerJson)
     	  .contentType(ContentType.JSON)
-          .when().post("/covid/cadastro")
+          .when().post("/covid/register")
           .then()
              .statusCode(200)
-             .body("name", is(cadastro.getName()),
-            		 "rateLimitPerMinute", is(cadastro.getRateLimitPerMinute()),
+             .body("name", is(register.getName()),
+            		 "rateLimitPerMinute", is(register.getRateLimitPerMinute()),
             		 "apiKey", Matchers.hasLength(CovidUtil.KEY_SIZE),
             		 "$", Matchers.hasKey("createdAt"));
     }
     
     @Test
-    public void testGeralUnauthorized() {
+    public void testGeneralUnauthorized() {
         given()
-          .when().get("/covid/geral")
+          .when().get("/covid/general")
           .then()
              .statusCode(401);
     }
     
     @Test
-    public void testGeralManyRequests() {
+    public void testGeneralManyRequests() {
         given()
           .queryParams("api-key", API_KEY2)
-          .when().get("/covid/geral")
+          .when().get("/covid/general")
           .then()
              .statusCode(429);
     }
     
     @Test
-    public void testGeral() {
+    public void testGeneral() {
         given()
           .queryParams("api-key", API_KEY)
-          .when().get("/covid/geral")
+          .when().get("/covid/general")
           .then()
              .statusCode(200)
              .body("$", Matchers.hasKey("confirmados"),
@@ -97,18 +96,27 @@ public class CovidResourceTest {
     }
     
     @Test
-    public void testEstadoUnauthorized() {
+    public void testStateUnauthorized() {
         given()
-          .when().get("/covid/estado")
+          .when().get("/covid/state")
           .then()
              .statusCode(401);
+    }    
+    
+    @Test
+    public void testStateManyRequests() {
+        given()
+          .queryParams("api-key", API_KEY2)
+          .when().get("/covid/state")
+          .then()
+             .statusCode(429);
     }
     
     @Test
-    public void testEstado() {
+    public void testState() {
         given()
           .queryParams("api-key", API_KEY)
-          .when().get("/covid/estado")
+          .when().get("/covid/state")
           .then()
              .statusCode(200)
              .body("$.size()", is(27),
@@ -117,18 +125,27 @@ public class CovidResourceTest {
     }
     
     @Test
-    public void testEstadoRegiaoUnauthorized() {
+    public void testStateRegionUnauthorized() {
         given()
-          .when().get("/covid/estadoRegiao")
+          .when().get("/covid/stateRegion")
           .then()
              .statusCode(401);
     }
     
     @Test
-    public void testEstadoRegiao() {
+    public void testStateRegionManyRequests() {
+        given()
+          .queryParams("api-key", API_KEY2)
+          .when().get("/covid/stateRegion")
+          .then()
+             .statusCode(429);
+    }
+    
+    @Test
+    public void testStateRegion() {
         given()
           .queryParams("api-key", API_KEY)
-          .when().get("/covid/estadoRegiao")
+          .when().get("/covid/stateRegion")
           .then()
              .statusCode(200)
              .body("$.size()", is(27),

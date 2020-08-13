@@ -1,6 +1,6 @@
-package dev.marcuspinto.rest.client;
+package dev.marcuspinto.resource;
 
-public class Cadastro {
+public class Register {
 
 	private String name;
 	private Integer rateLimitPerMinute;

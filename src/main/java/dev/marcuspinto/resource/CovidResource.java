@@ -16,7 +16,6 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import dev.marcuspinto.entity.Client;
 import dev.marcuspinto.entity.ClientService;
-import dev.marcuspinto.rest.client.Cadastro;
 import dev.marcuspinto.rest.client.CovidService;
 import dev.marcuspinto.rest.client.Estado;
 import dev.marcuspinto.rest.client.EstadoRegiao;
@@ -33,32 +32,32 @@ public class CovidResource {
 	ClientService clientService;
 
 	@POST
-	@Path("/cadastro")
+	@Path("/register")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Client cadastro(Cadastro cadastro) throws NoSuchAlgorithmException {
-		return clientService.createClient(cadastro.getName(), cadastro.getRateLimitPerMinute());
+	public Client register(Register register) throws NoSuchAlgorithmException {
+		return clientService.createClient(register.getName(), register.getRateLimitPerMinute());
 	}
 
 	@GET
-    @Path("/geral")
+    @Path("/general")
     @Produces(MediaType.APPLICATION_JSON)
-    public Geral geral(@QueryParam("api-key") String apiKey) {
+    public Geral general(@QueryParam("api-key") String apiKey) {
 		validate(apiKey);
         return covidService.getGeral();
     }
 	
 	@GET
-	@Path("/estado")
+	@Path("/state")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Estado> estado(@QueryParam("api-key") String apiKey) {
+	public Set<Estado> state(@QueryParam("api-key") String apiKey) {
 		validate(apiKey);
 		return covidService.getEstado();
 	}
 	
 	@GET
-	@Path("/estadoRegiao")
+	@Path("/stateRegion")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<EstadoRegiao> estadoRegiao(@QueryParam("api-key") String apiKey) {
+	public Set<EstadoRegiao> stateRegion(@QueryParam("api-key") String apiKey) {
 		validate(apiKey);
 		return covidService.getEstadoRegiao();
 	}

@@ -33,3 +33,37 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 You can then execute your native executable with: `./target/covid-api-1.0.0-SNAPSHOT-runner`
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image.
+
+## OpenAPI and Swagger documentation
+
+OpenAPI using: `http://localhost:8080/openapi`
+
+Swagger UI using: `http://localhost:8080/swagger-ui`
+
+## How to use the Covid API
+
+To register a new API Client POST to `http://localhost:8080/covid/register`
+
+```sh
+{
+    "name" : "Governo do Estado de PE",
+    "rateLimitPerMinute" : 10
+}
+```
+
+Result:
+
+```sh
+{
+    "apiKey": "8fe50dfeb85d380e7c9660c48f866acf96be",
+    "createdAt": "2020-08-13T01:26:51.426Z[UTC]",
+    "name": "Governo do Estado de PE",
+    "rateLimitPerMinute": 10
+}
+```
+
+To query data from the country GET to `http://localhost:8080/covid/general?api-key=8fe50dfeb85d380e7c9660c48f866acf96be`
+
+To query data by state GET to `http://localhost:8080/covid/state?api-key=8fe50dfeb85d380e7c9660c48f866acf96be`
+
+To query data by state region GET to `http://localhost:8080/covid/stateRegion?api-key=8fe50dfeb85d380e7c9660c48f866acf96be`
